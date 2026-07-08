@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<style>body {
+    font-family: 'Test', sans-serif;
+    font-size: 48px;
+    
+    /* 強制開啟所有排版特性 */
+    /* ccmp: 組合字符替換, kern: 橫排字距, vkrn: 直排字距 */
+    font-feature-settings: "ccmp" on, "kern" on, "vkrn" on;
+}
+
+.vertical-text {
+    writing-mode: vertical-rl;
+    /* 直排模式下，再次確認開啟特性 */
+    font-feature-settings: "vert" on, "vkrn" on;
+}
+  @font-face {
+    font-family: 'Test';
+    src: url('./302A302F-Regular.woff2');
+  }
+  body {
+    font-family: 'Test', sans-serif;
+    font-size: 48px;
+    /* 移除多餘的 "calt" 1，讓瀏覽器依據正常標準處理 */
+  }
+  .vertical-text {
+    writing-mode: vertical-rl;
+    /* 直排模式會自動觸發 vert 和 vkrn 特性 */
+  }
+</style>
+</head>
+<body>
+
+<p>
+  㠍〪〭〫〬㠍〪〪〭〭〫〫〬〬㠎〪〭〫〬<br>
+  㠎〪<br>
+  㠎〫<br>
+  㠎〬<br>
+  㠎〭<br>
+</p>
+
+<div class="vertical-text">
+  㠍〪〭〫〬㠍〪〪〭〭〫〫〬〬㠎〪〭〫〬<br>
+  㠎〪<br>
+  㠎〫<br>
+  㠎〬<br>
+  㠎〭<br>
+  這〪是<br>
+  㠍〪〭〫〬㠍〪〪〭〭〫〫〬〬㠎〪〭〫〬<br>
+</div>
+
+</body>
+</html>
