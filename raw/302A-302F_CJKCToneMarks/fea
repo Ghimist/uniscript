@@ -60,11 +60,18 @@ languagesystem bopo dflt;
 #     pos ideographicenteringtonemarkcomb <998 974 0 0>;
 # } Move_ITM_vkrn;
 # [<500 1000 0 0>]
+; lookup Move_ITM_vkrn { # GPOS lookup type SingleAdjustment [1786 974] # 處理直排位移 [GPOS Type 1]
+;     pos ideographicleveltonemarkcomb <-498 974 0 0>;
+;     pos ideographicrisingtonemarkcomb <-498 1786 0 0>;
+;     pos ideographicdepartingtonemarkcomb <498 1786 0 0>;
+;     pos ideographicenteringtonemarkcomb <498 974 0 0>;
+; } Move_ITM_vkrn;
+# vkrn=vkrn-kern
 lookup Move_ITM_vkrn { # GPOS lookup type SingleAdjustment [1786 974] # 處理直排位移 [GPOS Type 1]
-    pos ideographicleveltonemarkcomb <-498 974 0 0>;
-    pos ideographicrisingtonemarkcomb <-498 1786 0 0>;
-    pos ideographicdepartingtonemarkcomb <498 1786 0 0>;
-    pos ideographicenteringtonemarkcomb <498 974 0 0>;
+    pos ideographicleveltonemarkcomb     < 408 1092 0 0 >;
+    pos ideographicrisingtonemarkcomb    < 408  908 0 0 >;
+    pos ideographicdepartingtonemarkcomb < 592  908 0 0 >;
+    pos ideographicenteringtonemarkcomb  < 592 1092 0 0 >;
 } Move_ITM_vkrn;
 # [786 -26 94 906]
 lookup Move_ITM_kern { # GPOS lookup type SingleAdjustment [-906 -94] # 處理橫排位移 [GPOS Type 1]
