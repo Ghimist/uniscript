@@ -9,13 +9,13 @@
     
     /* 強制開啟所有排版特性 */
     /* ccmp: 組合字符替換, kern: 橫排字距, vkrn: 直排字距 */
-    font-feature-settings: "kern" 1;
+    font-feature-settings: "kern" 1, "vkrn" 0;
 }
 
 .vertical-text {
     writing-mode: vertical-rl;
     /* 直排模式下，再次確認開啟特性 */
-    font-feature-settings: "kern" 1;
+    font-feature-settings: "kern" 1, "vkrn" 1;
 }
   @font-face {
     font-family: 'Test';
