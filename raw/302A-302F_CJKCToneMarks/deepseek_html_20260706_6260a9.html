@@ -9,13 +9,13 @@
     
     /* 強制開啟所有排版特性 */
     /* ccmp: 組合字符替換, kern: 橫排字距, vkrn: 直排字距 */
-    font-feature-settings: "kern" on, "vkrn" off;
+    font-feature-settings: "kern" off, "vkrn" off;
 }
 
 .vertical-text {
     writing-mode: vertical-rl;
     /* 直排模式下，再次確認開啟特性 */
-    font-feature-settings: "vert" on, "vkrn" off;
+    font-feature-settings: "vert" off, "vkrn" on;
 }
   @font-face {
     font-family: 'Test';
@@ -56,7 +56,7 @@
   㠎〭<br></bdi>
 </div>
 
-<div class="vertical-text"><br>  㠍〪㠎〪〭<br>
+<div class="vertical-text"><br>㠍〬<br>這〬是<br>  㠍〪㠎〪〭<br>
   㠍〪〭〫〬㠍〪〪〭〭〫〫〬〬㠎〪〭〫〬<br>
   㠎〪<br>
   㠎〫<br>
