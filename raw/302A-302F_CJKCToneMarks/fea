@@ -17,69 +17,92 @@
 # Languagesystem definitions
 #
 
+# OpenType Layout feature definitions
+# Font name: 302A-302F
+
 languagesystem DFLT dflt;
+languagesystem hani dflt;
+languagesystem bopo dflt;
 
 #
 # Global glyph class definitions
 #
 
+# --- Global glyph class definitions ---
+
 @ideographic_tonemarkcomb = [ideographicleveltonemarkcomb ideographicrisingtonemarkcomb ideographicdepartingtonemarkcomb ideographicenteringtonemarkcomb];
 @ideographic_tonemarkcomb.vkrn = [ideographicleveltonemarkcomb.vkrn ideographicrisingtonemarkcomb.vkrn ideographicdepartingtonemarkcomb.vkrn ideographicenteringtonemarkcomb.vkrn];
 @ideographic_tonemarkcomb.kern = [ideographicleveltonemarkcomb.kern ideographicrisingtonemarkcomb.kern ideographicdepartingtonemarkcomb.kern ideographicenteringtonemarkcomb.kern];
-@MARK = [ideographicleveltonemarkcomb ideographicrisingtonemarkcomb ideographicdepartingtonemarkcomb ideographicenteringtonemarkcomb ideographicleveltonemarkcomb.vkrn ideographicrisingtonemarkcomb.vkrn ideographicdepartingtonemarkcomb.vkrn ideographicenteringtonemarkcomb.vkrn ideographicleveltonemarkcomb.kern ideographicrisingtonemarkcomb.kern ideographicdepartingtonemarkcomb.kern ideographicenteringtonemarkcomb.kern];
+
+# （可選）將這三組定義到同一個 Class，方便 GDEF 宣告
+@ALL_TONEMARKS = [@ideographic_tonemarkcomb @ideographic_tonemarkcomb.vkrn @ideographic_tonemarkcomb.kern];
 
 #
 # Global lookup definitions
 #
 
-lookup Trans_ITM_vkrn { # GSUB lookup type SingleSubstitution
-    sub @ideographic_tonemarkcomb by @ideographic_tonemarkcomb.vkrn;
-} Trans_ITM_vkrn;
+# --- Global lookup definitions ---
 
-lookup Trans_ITM_kern { # GSUB lookup type SingleSubstitution
-    sub @ideographic_tonemarkcomb by @ideographic_tonemarkcomb.kern;
-} Trans_ITM_kern;
+# lookup Trans_ITM_kern { # 處理橫排替換
+#     sub @ideographic_tonemarkcomb by @ideographic_tonemarkcomb.kern;
+# } Trans_ITM_kern;
+
+# lookup Trans_ITM_vkrn { # 處理直排替換
+#     sub @ideographic_tonemarkcomb by @ideographic_tonemarkcomb.vkrn;
+#     # 【關鍵防禦】：防止 ccmp 先執行把字變成了 .kern，導致 vert 抓不到字
+#     sub @ideographic_tonemarkcomb.kern by @ideographic_tonemarkcomb.vkrn; 
+# } Trans_ITM_vkrn;
 
 # [786 -26 94 906]
-lookup Move_ITM_vkrn { # GPOS lookup type SingleAdjustment [1786 974]
-    pos ideographicleveltonemarkcomb.vkrn <2 974 0 0>;
-    pos ideographicrisingtonemarkcomb.vkrn <2 1786 0 0>;
-    pos ideographicdepartingtonemarkcomb.vkrn <998 1786 0 0>;
-    pos ideographicenteringtonemarkcomb.vkrn <998 974 0 0>;
+# lookup Move_ITM_vkrn { # GPOS lookup type SingleAdjustment [1786 974] # 處理直排位移 [GPOS Type 1]
+#     pos ideographicleveltonemarkcomb <2 974 0 0>;
+#     pos ideographicrisingtonemarkcomb <2 1786 0 0>;
+#     pos ideographicdepartingtonemarkcomb <998 1786 0 0>;
+#     pos ideographicenteringtonemarkcomb <998 974 0 0>;
+# } Move_ITM_vkrn;
+lookup Move_ITM_vkrn { # GPOS lookup type SingleAdjustment [1786 974] # 處理直排位移 [GPOS Type 1]
+    pos ideographicleveltonemarkcomb <-500 -500 0 0>;
+    pos ideographicrisingtonemarkcomb <0 0 0 0>;
+    pos ideographicdepartingtonemarkcomb <0 0 0 0>;
+    pos ideographicenteringtonemarkcomb <0 0 0 0>;
 } Move_ITM_vkrn;
-lookup Move_ITM_kern { # GPOS lookup type SingleAdjustment [-906 -94]
-    pos ideographicleveltonemarkcomb.kern <-906 -118 0 0>;
-    pos ideographicrisingtonemarkcomb.kern <-906 878 0 0>;
-    pos ideographicdepartingtonemarkcomb.kern <-94 878 0 0>;
-    pos ideographicenteringtonemarkcomb.kern <-94 -118 0 0>;
+lookup Move_ITM_kern { # GPOS lookup type SingleAdjustment [-906 -94] # 處理橫排位移 [GPOS Type 1]
+    pos ideographicleveltonemarkcomb <-906 -118 0 0>;
+    pos ideographicrisingtonemarkcomb <-906 878 0 0>;
+    pos ideographicdepartingtonemarkcomb <-94 878 0 0>;
+    pos ideographicenteringtonemarkcomb <-94 -118 0 0>;
 } Move_ITM_kern;
 
 #
 # Feature definitions
 #
 
-feature vkrn { # Vertical Kerning
-    lookup fTrans_ITM_vkrn { # GSUB lookup type ChainingContext
-        sub @ideographic_tonemarkcomb' lookup Trans_ITM_vkrn;
-    } fTrans_ITM_vkrn;
+# feature vert { # Vertical Writing
+#     sub @ideographic_tonemarkcomb' lookup Trans_ITM_vkrn;
+# } vert;
 
-    lookup fMove_ITM_vkrn { # GPOS lookup type ChainedContextPositioning
-        pos @ideographic_tonemarkcomb.vkrn' lookup Move_ITM_vkrn;
+# feature ccmp { # Glyph Composition / Decomposition
+#     sub @ideographic_tonemarkcomb' lookup Trans_ITM_kern;
+# } ccmp;
+
+feature vkrn { # Vertical Kerning
+    lookup fMove_ITM_vkrn {
+        pos @ideographic_tonemarkcomb' lookup Move_ITM_vkrn;
     } fMove_ITM_vkrn;
 } vkrn;
 
 feature kern { # Kerning
-    lookup fTrans_ITM_kern { # GSUB lookup type ChainingContext
-        sub @ideographic_tonemarkcomb' lookup Trans_ITM_kern;
-    } fTrans_ITM_kern;
-
-    lookup fMove_ITM_kern { # GPOS lookup type ChainedContextPositioning
-        pos @ideographic_tonemarkcomb.kern' lookup Move_ITM_kern;
+    lookup fMove_ITM_kern; {
+        pos @ideographic_tonemarkcomb' lookup Move_ITM_kern;
     } fMove_ITM_kern;
 } kern;
 
 # Glyph class "MARK" already defined
 
+# --- GDEF Table ---
+
 table GDEF {
-    GlyphClassDef ,, @MARK,;
+    # 【強烈建議】：把調號放在第一格（Base）而不是第三格（Mark）。
+    # 如果放在第三格，許多軟體的 kern/vkrn 將完全不會對調號作用。
+    GlyphClassDef @ALL_TONEMARKS, , , ;
 } GDEF;
